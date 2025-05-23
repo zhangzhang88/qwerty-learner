@@ -30,27 +30,8 @@ export default defineConfig(async ({ mode }) => {
     ],
     build: {
       minify: true,
-      outDir: 'dist',
+      outDir: 'build',
       sourcemap: false,
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom')) {
-                return 'react-vendor';
-              }
-              if (id.includes('@radix-ui')) {
-                return 'ui-vendor';
-              }
-              if (id.includes('jotai') || id.includes('framer-motion')) {
-                return 'utils-vendor';
-              }
-              return 'vendor';
-            }
-          }
-        },
-      },
-      chunkSizeWarningLimit: 1000,
     },
     esbuild: {
       drop: mode === 'development' ? [] : ['console', 'debugger'],
