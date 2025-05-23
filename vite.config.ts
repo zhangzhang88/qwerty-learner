@@ -34,11 +34,20 @@ export default defineConfig(async ({ mode }) => {
       sourcemap: false,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
-            'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip'],
-            'utils-vendor': ['jotai', 'framer-motion'],
-          },
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'react-vendor';
+              }
+              if (id.includes('@radix-ui')) {
+                return 'ui-vendor';
+              }
+              if (id.includes('jotai') || id.includes('framer-motion')) {
+                return 'utils-vendor';
+              }
+              return 'vendor';
+            }
+          }
         },
       },
       chunkSizeWarningLimit: 1000,
