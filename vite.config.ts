@@ -30,8 +30,18 @@ export default defineConfig(async ({ mode }) => {
     ],
     build: {
       minify: true,
-      outDir: 'build',
+      outDir: 'dist',
       sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip'],
+            'utils-vendor': ['jotai', 'framer-motion'],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 1000,
     },
     esbuild: {
       drop: mode === 'development' ? [] : ['console', 'debugger'],
